@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>agentplan: before / after</title></head>
+<body style="font-family:monospace;max-width:1400px;margin:auto;padding:16px">
+<h2>agentplan: your agent workflow, query-planned</h2>
+<h3>Optimizer rules fired</h3><ul><li><b>pushdown (1)</b>: filter 'validator' pushed before agent 'enricher'</li><li><b>reorder (1)</b>: join 'join_enrich': probe 'enricher' first; semi-join reduces sources ['ref_table']</li><li><b>parallel (1)</b>: 9 execution stages; 9 nodes</li></ul>
+<h3>Before</h3><svg xmlns="http://www.w3.org/2000/svg" width="1770" height="226" font-family="monospace">
+<rect width="1770" height="226" fill="#ffffff"/>
+<text x="20" y="18" font-size="15" font-weight="bold" fill="#111">BEFORE: naive fixed-order plan</text>
+<line x1="230" y1="50.0" x2="270" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="50.0" x2="520" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="98.0" x2="770" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="230" y1="146.0" x2="270" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="980" y1="98.0" x2="1020" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="1020" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1230" y1="98.0" x2="1270" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1480" y1="98.0" x2="1520" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#9ca3af"/></marker></defs>
+
+<rect x="20" y="20.0" width="210" height="60" rx="8" fill="#dbeafe" stroke="#374151"/>
+<text x="30" y="40.0" font-size="11" font-weight="bold" fill="#111">SCAN records</text>
+<text x="30" y="58.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="270" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="280" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT cleaner</text>
+<text x="280" y="58.0" font-size="10" fill="#4b5563">500tok/15ms</text>
+
+<rect x="520" y="68.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="88.0" font-size="11" font-weight="bold" fill="#111">AGENT enricher</text>
+<text x="530" y="106.0" font-size="10" fill="#4b5563">1600tok/60ms</text>
+
+<rect x="770" y="68.0" width="210" height="60" rx="8" fill="#dcfce7" stroke="#374151"/>
+<text x="780" y="88.0" font-size="11" font-weight="bold" fill="#111">FILTER validator</text>
+<text x="780" y="106.0" font-size="10" fill="#4b5563">30tok/2ms sel=0.75</text>
+
+<rect x="20" y="116.0" width="210" height="60" rx="8" fill="#dbeafe" stroke="#374151"/>
+<text x="30" y="136.0" font-size="11" font-weight="bold" fill="#111">SCAN ref_table</text>
+<text x="30" y="154.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="270" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="280" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT ref_lookup</text>
+<text x="280" y="154.0" font-size="10" fill="#4b5563">550tok/20ms</text>
+
+<rect x="1020" y="68.0" width="210" height="60" rx="8" fill="#f3e8ff" stroke="#374151"/>
+<text x="1030" y="88.0" font-size="11" font-weight="bold" fill="#111">JOIN join_enrich</text>
+<text x="1030" y="106.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="1270" y="68.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="1280" y="88.0" font-size="11" font-weight="bold" fill="#111">AGENT aggregator</text>
+<text x="1280" y="106.0" font-size="10" fill="#4b5563">3000tok/50ms</text>
+
+<rect x="1520" y="68.0" width="210" height="60" rx="8" fill="#fee2e2" stroke="#374151"/>
+<text x="1530" y="88.0" font-size="11" font-weight="bold" fill="#111">SINK sink</text>
+<text x="1530" y="106.0" font-size="10" fill="#4b5563"></text>
+</svg>
+<h3>After</h3><svg xmlns="http://www.w3.org/2000/svg" width="2270" height="130" font-family="monospace">
+<rect width="2270" height="130" fill="#ffffff"/>
+<text x="20" y="18" font-size="15" font-weight="bold" fill="#111">AFTER: cost-optimized physical plan</text>
+<line x1="230" y1="50.0" x2="270" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="50.0" x2="770" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="50.0" x2="520" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1230" y1="50.0" x2="1270" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="980" y1="50.0" x2="1520" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1480" y1="50.0" x2="1520" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1730" y1="50.0" x2="1770" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1980" y1="50.0" x2="2020" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#9ca3af"/></marker></defs>
+
+<rect x="20" y="20.0" width="210" height="60" rx="8" fill="#dbeafe" stroke="#374151"/>
+<text x="30" y="40.0" font-size="11" font-weight="bold" fill="#111">SCAN records</text>
+<text x="30" y="58.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="270" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="280" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT cleaner</text>
+<text x="280" y="58.0" font-size="10" fill="#4b5563">500tok/15ms</text>
+
+<rect x="770" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="780" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT enricher</text>
+<text x="780" y="58.0" font-size="10" fill="#4b5563">1600tok/60ms</text>
+
+<rect x="520" y="20.0" width="210" height="60" rx="8" fill="#dcfce7" stroke="#374151"/>
+<text x="530" y="40.0" font-size="11" font-weight="bold" fill="#111">FILTER validator</text>
+<text x="530" y="58.0" font-size="10" fill="#4b5563">30tok/2ms sel=0.75</text>
+
+<rect x="1020" y="20.0" width="210" height="60" rx="8" fill="#dbeafe" stroke="#374151"/>
+<text x="1030" y="40.0" font-size="11" font-weight="bold" fill="#111">SCAN ref_table</text>
+<text x="1030" y="58.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="1270" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="1280" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT ref_lookup</text>
+<text x="1280" y="58.0" font-size="10" fill="#4b5563">550tok/20ms</text>
+
+<rect x="1520" y="20.0" width="210" height="60" rx="8" fill="#f3e8ff" stroke="#374151"/>
+<text x="1530" y="40.0" font-size="11" font-weight="bold" fill="#111">JOIN join_enrich</text>
+<text x="1530" y="58.0" font-size="10" fill="#4b5563"></text>
+<text x="1530" y="72.0" font-size="10" fill="#7c3aed">semi-join driven</text>
+
+<rect x="1770" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="1780" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT aggregator</text>
+<text x="1780" y="58.0" font-size="10" fill="#4b5563">3000tok/50ms</text>
+
+<rect x="2020" y="20.0" width="210" height="60" rx="8" fill="#fee2e2" stroke="#374151"/>
+<text x="2030" y="40.0" font-size="11" font-weight="bold" fill="#111">SINK sink</text>
+<text x="2030" y="58.0" font-size="10" fill="#4b5563"></text>
+</svg>
+</body></html>
