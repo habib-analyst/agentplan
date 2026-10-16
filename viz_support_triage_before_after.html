@@ -1,0 +1,108 @@
+<!DOCTYPE html><html><head><meta charset="utf-8">
+<title>agentplan: before / after</title></head>
+<body style="font-family:monospace;max-width:1400px;margin:auto;padding:16px">
+<h2>agentplan: your agent workflow, query-planned</h2>
+<h3>Optimizer rules fired</h3><ul><li><b>prune (1)</b>: dead agent 'audit_logger' eliminated</li><li><b>reorder (3)</b>: route pruning: agent 'spec_a' restricted to route in ['A']; route pruning: agent 'spec_b' restricted to route in ['B']; route pruning: agent 'spec_c' restricted to route in ['C']</li><li><b>parallel (1)</b>: 6 execution stages; 8 nodes</li></ul>
+<h3>Before</h3><svg xmlns="http://www.w3.org/2000/svg" width="1520" height="322" font-family="monospace">
+<rect width="1520" height="322" fill="#ffffff"/>
+<text x="20" y="18" font-size="15" font-weight="bold" fill="#111">BEFORE: naive fixed-order plan</text>
+<line x1="230" y1="146.0" x2="270" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="520" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="520" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="520" y2="242.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="50.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="146.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="242.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="980" y1="146.0" x2="1020" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1230" y1="146.0" x2="1270" y2="98.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1230" y1="146.0" x2="1270" y2="194.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#9ca3af"/></marker></defs>
+
+<rect x="20" y="116.0" width="210" height="60" rx="8" fill="#dbeafe" stroke="#374151"/>
+<text x="30" y="136.0" font-size="11" font-weight="bold" fill="#111">SCAN tickets</text>
+<text x="30" y="154.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="270" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="280" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT classifier</text>
+<text x="280" y="154.0" font-size="10" fill="#4b5563">300tok/8ms</text>
+
+<rect x="520" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT spec_a</text>
+<text x="530" y="58.0" font-size="10" fill="#4b5563">1250tok/50ms</text>
+
+<rect x="520" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT spec_b</text>
+<text x="530" y="154.0" font-size="10" fill="#4b5563">1250tok/50ms</text>
+
+<rect x="520" y="212.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="232.0" font-size="11" font-weight="bold" fill="#111">AGENT spec_c</text>
+<text x="530" y="250.0" font-size="10" fill="#4b5563">1250tok/50ms</text>
+
+<rect x="770" y="116.0" width="210" height="60" rx="8" fill="#f3e8ff" stroke="#374151"/>
+<text x="780" y="136.0" font-size="11" font-weight="bold" fill="#111">JOIN merge</text>
+<text x="780" y="154.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="1020" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="1030" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT resolver</text>
+<text x="1030" y="154.0" font-size="10" fill="#4b5563">700tok/20ms</text>
+
+<rect x="1270" y="68.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="1280" y="88.0" font-size="11" font-weight="bold" fill="#111">AGENT audit_logger</text>
+<text x="1280" y="106.0" font-size="10" fill="#4b5563">400tok/10ms</text>
+
+<rect x="1270" y="164.0" width="210" height="60" rx="8" fill="#fee2e2" stroke="#374151"/>
+<text x="1280" y="184.0" font-size="11" font-weight="bold" fill="#111">SINK sink</text>
+<text x="1280" y="202.0" font-size="10" fill="#4b5563"></text>
+</svg>
+<h3>After</h3><svg xmlns="http://www.w3.org/2000/svg" width="1520" height="322" font-family="monospace">
+<rect width="1520" height="322" fill="#ffffff"/>
+<text x="20" y="18" font-size="15" font-weight="bold" fill="#111">AFTER: cost-optimized physical plan</text>
+<line x1="230" y1="146.0" x2="270" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="520" y2="50.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="520" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="520" y2="242.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="480" y1="146.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="50.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="146.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="730" y1="242.0" x2="770" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="980" y1="146.0" x2="1020" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<line x1="1230" y1="146.0" x2="1270" y2="146.0" stroke="#9ca3af" stroke-width="1.5" marker-end="url(#ar)"/>
+<defs><marker id="ar" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8" fill="none" stroke="#9ca3af"/></marker></defs>
+
+<rect x="20" y="116.0" width="210" height="60" rx="8" fill="#dbeafe" stroke="#374151"/>
+<text x="30" y="136.0" font-size="11" font-weight="bold" fill="#111">SCAN tickets</text>
+<text x="30" y="154.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="270" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="280" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT classifier</text>
+<text x="280" y="154.0" font-size="10" fill="#4b5563">300tok/8ms</text>
+
+<rect x="520" y="20.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="40.0" font-size="11" font-weight="bold" fill="#111">AGENT spec_a</text>
+<text x="530" y="58.0" font-size="10" fill="#4b5563">1250tok/50ms</text>
+<text x="530" y="72.0" font-size="10" fill="#7c3aed">routed: route in ['A']</text>
+
+<rect x="520" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT spec_b</text>
+<text x="530" y="154.0" font-size="10" fill="#4b5563">1250tok/50ms</text>
+<text x="530" y="168.0" font-size="10" fill="#7c3aed">routed: route in ['B']</text>
+
+<rect x="520" y="212.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="530" y="232.0" font-size="11" font-weight="bold" fill="#111">AGENT spec_c</text>
+<text x="530" y="250.0" font-size="10" fill="#4b5563">1250tok/50ms</text>
+<text x="530" y="264.0" font-size="10" fill="#7c3aed">routed: route in ['C']</text>
+
+<rect x="770" y="116.0" width="210" height="60" rx="8" fill="#f3e8ff" stroke="#374151"/>
+<text x="780" y="136.0" font-size="11" font-weight="bold" fill="#111">JOIN merge</text>
+<text x="780" y="154.0" font-size="10" fill="#4b5563"></text>
+
+<rect x="1020" y="116.0" width="210" height="60" rx="8" fill="#fef3c7" stroke="#374151"/>
+<text x="1030" y="136.0" font-size="11" font-weight="bold" fill="#111">AGENT resolver</text>
+<text x="1030" y="154.0" font-size="10" fill="#4b5563">700tok/20ms</text>
+
+<rect x="1270" y="116.0" width="210" height="60" rx="8" fill="#fee2e2" stroke="#374151"/>
+<text x="1280" y="136.0" font-size="11" font-weight="bold" fill="#111">SINK sink</text>
+<text x="1280" y="154.0" font-size="10" fill="#4b5563"></text>
+</svg>
+</body></html>
